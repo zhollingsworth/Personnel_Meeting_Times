@@ -1,8 +1,4 @@
-/*************************************************************
- Class provided as part of example from Interview Cake:
- https://www.interviewcake.com/question/java/merging-ranges
- ************************************************************/
-
+//The class Meeting as well as the methods Meeting and toString were provided by Interview Cake
 public class Meeting {
 
     int startTime;
