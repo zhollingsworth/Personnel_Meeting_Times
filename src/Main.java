@@ -51,12 +51,20 @@ public class Main
 			{
 				if(times[i+1] > end)
 					end = times[i+1];
+				if(times[i] < start)
+					start = times[i];
 				i += 2;
 			}
 			
-			else if(times[i] > start && times[i] < times[i-1] && times[i+1] > end)
+			else if(times[i] > start && times[i] <= times[i-1] && times[i+1] > end)
 			{
 				end = times[i+1];
+				i += 2;
+			}
+			
+			else if(times[i] > start && times[i] <= times[i-1] && times[i+1] < times[i-1])
+			{
+				end = times[i-1];
 				i += 2;
 			}
 			
@@ -86,8 +94,8 @@ public class Main
 	
 	public static void main(String[] args)
 	{
-		Meeting s1 = new Meeting(0,1);
-		Meeting s2 = new Meeting(3,5);
+		Meeting s1 = new Meeting(1,5);
+		Meeting s2 = new Meeting(2,3);
 		Meeting s3 = new Meeting(4,8);
 		Meeting s4 = new Meeting(10,12);
 		Meeting s5 = new Meeting(9,10);
