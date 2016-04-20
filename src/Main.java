@@ -22,17 +22,18 @@ public class Main
 	public static String condenseMeetingTimes(String receive)
 	{
 		//Variables related to parsing the string and storing the integers in an int[]
-		int[] times = new int[(1 + ((receive.length()-5) / 8)) * 2];
+		int[] times = new int[26];
 		int count = 0;
-		String cleanString = receive.replaceAll("[(),]", "");
+		String cleanString = receive.replaceAll("[(),]", "");//getting rid of unnecessary string characters
 		
 		//Variables used in creating the condensed meeting blocks
-		int start;
-		int end;
+		int start = 0;
+		int i, j, k;
+		int[] storeTimes = new int[26];
 		ArrayList<Integer> newTimes = new ArrayList<Integer>();
 		String reply = "";
 		
-		//Pulling times out of string and storing in array
+		//Pulling the times out of the cleanString and storing them in times[]
 		Scanner scanString = new Scanner(cleanString);
 		while(scanString.hasNext())
 		{
@@ -41,61 +42,51 @@ public class Main
 		}
 		scanString.close();
 		
-		//Cycling through and arranging meeting times
-		start = times[0];
-		end = times[1];
-		
-		for(int i = 2; i < times.length; i += 2)
+		/*Using the times[] array, the storeTimes[] array is being populated with either
+		1s or 2s corresponding to the time blocks of the meetings*/
+		for(i = 0; i < count; i += 2)
 		{
-			if(times[i] < start && times[i+1] >= times[i])
+			for(j = times[i]; j <= times[i+1]; j++)
 			{
-				if(times[i+1] > end)
-					end = times[i+1];
-				if(times[i] < start)
-					start = times[i];
-				i += 2;
-			}
-			
-			else if(times[i] > start && times[i] <= times[i-1] && times[i+1] > end)
-			{
-				end = times[i+1];
-				i += 2;
-			}
-			
-			else if(times[i] > start && times[i] <= times[i-1] && times[i+1] < times[i-1])
-			{
-				end = times[i-1];
-				i += 2;
-			}
-			
-			newTimes.add(start);
-			newTimes.add(end);
-			if((i+2) < times.length)
-			{
-				start = times[i];
-				end = times[i+1];
+				if(j == times[i+1] && (storeTimes[j] != 1))
+					storeTimes[j+10] = 2;
+				else
+					storeTimes[j+10] = 1;
 			}
 		}
 		
-		//Preparing string to return with finalized data
-		for(int j = 0; j < newTimes.size()-1; j++)
+		/*Now using the storeTimes[] an ArrayList called newTimes will be populated with
+		the actual numeric times of the scheduled meetings*/
+		for(k = 10; k < storeTimes.length; k++)
 		{
-			if(j%2 == 0)
-				reply += "("+newTimes.get(j)+", ";
+			if((storeTimes[k] == 1) && ((storeTimes[k-1] == 0) || (storeTimes[k-1] == 2)))
+				start = k-10;
+			else if(storeTimes[k] == 2)
+			{
+				newTimes.add(start);
+				newTimes.add(k-10);
+			}
+		}
+		
+		/*Using the data from newTimes the string reply will be formatted with the 
+		condensed times*/
+		for(k = 0; k < newTimes.size()-1; k++)
+		{
+			if(k%2 == 0)
+				reply += "("+newTimes.get(k)+", ";
 			else
-				reply += newTimes.get(j)+"), ";
+				reply += newTimes.get(k)+"), ";
 		}
 		reply += newTimes.get(newTimes.size()-1)+")";
 		
+
 		return reply;
-	}
-	
-	
+	}//End of condensedMeetingTimes method
 	
 	public static void main(String[] args)
 	{
-		Meeting s1 = new Meeting(1,5);
-		Meeting s2 = new Meeting(2,3);
+		Meeting s1 = new Meeting(1,10);
+		Meeting s2 = new Meeting(3,5);
 		Meeting s3 = new Meeting(4,8);
 		Meeting s4 = new Meeting(10,12);
 		Meeting s5 = new Meeting(9,10);
