@@ -48,7 +48,7 @@ public class Main
 		{
 			for(j = times[i]; j <= times[i+1]; j++)
 			{
-				if(j == times[i+1] && (storeTimes[j] != 1))
+				if(j == times[i+1] && (storeTimes[j+10] != 1))
 					storeTimes[j+10] = 2;
 				else
 					storeTimes[j+10] = 1;
@@ -85,7 +85,7 @@ public class Main
 	
 	public static void main(String[] args)
 	{
-		Meeting s1 = new Meeting(1,10);
+		Meeting s1 = new Meeting(0,1);
 		Meeting s2 = new Meeting(3,5);
 		Meeting s3 = new Meeting(4,8);
 		Meeting s4 = new Meeting(10,12);
